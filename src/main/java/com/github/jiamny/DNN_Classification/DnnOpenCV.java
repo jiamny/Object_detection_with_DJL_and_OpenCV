@@ -45,22 +45,22 @@ public class DnnOpenCV {
     }
 
     public static Mat centerCrop(Mat inputImage) {
-        int y1 = Math.round((inputImage.rows() - TARGET_IMG_HEIGHT)*1.0f / 2);
+        int y1 = Math.round((inputImage.rows() - TARGET_IMG_HEIGHT) * 1.0f / 2);
         int y2 = Math.round(y1 + TARGET_IMG_HEIGHT);
-        int x1 = Math.round((inputImage.cols() - TARGET_IMG_WIDTH)*1.0f / 2);
+        int x1 = Math.round((inputImage.cols() - TARGET_IMG_WIDTH) * 1.0f / 2);
         int x2 = Math.round(x1 + TARGET_IMG_WIDTH);
 
         Rect centerRect = new Rect(x1, y1, (x2 - x1), (y2 - y1));
-        return( new Mat(inputImage, centerRect) );
+        return (new Mat(inputImage, centerRect));
     }
 
     public static Mat getPreprocessedImage(String imagePath) {
         // get the image from the internal resource folder
         imageRead = Imgcodecs.imread(imagePath);
-	
-    	// this object will store the preprocessed image
-	    Mat image = new Mat();
-	
+
+        // this object will store the preprocessed image
+        Mat image = new Mat();
+
         // resize input image
         Imgproc.resize(imageRead, image, new Size(256, 256));
 
@@ -129,16 +129,16 @@ public class DnnOpenCV {
         // decode classification results
         String label = DnnOpenCV.getPredictedClass(classification);
         System.out.println("Predicted Class: " + label);
-        
+
         // displaying the photo and putting the text on it
-        Point pos = new Point (50, 50);
+        Point pos = new Point(50, 50);
         Scalar colour = new Scalar(255, 255, 255);
-        Imgproc.putText(imageRead, "Predicted class is: " +label, pos, Imgproc.FONT_HERSHEY_SIMPLEX, 1.0, colour, 2);
+        Imgproc.putText(imageRead, "Predicted class is: " + label, pos, Imgproc.FONT_HERSHEY_SIMPLEX, 1.0, colour, 2);
 
         HighGui.imshow("Input Image", imageRead);
-        if (HighGui.waitKey(0) == 27){
+        if (HighGui.waitKey(0) == 27) {
             HighGui.destroyAllWindows();
-	    }
+        }
         System.exit(0);
     }
 }

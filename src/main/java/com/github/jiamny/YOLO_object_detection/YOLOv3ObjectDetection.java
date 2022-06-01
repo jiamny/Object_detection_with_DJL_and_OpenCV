@@ -17,22 +17,22 @@ import java.util.Scanner;
 import static com.github.jiamny.Utils.ImageHelper.addTextToBox;
 
 public class YOLOv3ObjectDetection {
-    private  final String model_weights;
-    private  final String model_config;
-    private  final String class_file_name_dir;
-    private  final String output_path;
-    private  final List<String> classes;
-    private  final List<String> output_layers;
+    private final String model_weights;
+    private final String model_config;
+    private final String class_file_name_dir;
+    private final String output_path;
+    private final List<String> classes;
+    private final List<String> output_layers;
     private final String input_path;
     private List<String> layer_names;
     private Net network;
     private final Size size;
     private Integer height;
     private Integer width;
- //   private Integer channels;
+    //   private Integer channels;
     private final Scalar mean;
     private Mat image;
- //   private Mat blob;
+    //   private Mat blob;
     private List<Mat> outputs;
     private final List<Rect2d> boxes;
     private final List<Float> confidences;
@@ -44,6 +44,7 @@ public class YOLOv3ObjectDetection {
     static {
         System.load("/usr/local/share/java/opencv4/libopencv_java455.so");
     }
+
     public YOLOv3ObjectDetection(String inputPath, String outputPath, Integer image_size, String outputFileName, String current_dir) {
 
         this.input_path = inputPath;
@@ -65,7 +66,8 @@ public class YOLOv3ObjectDetection {
         save = true;
         errors = false;
     }
-    private static int argmax(List<Float> array) {
+
+    static int argmax(List<Float> array) {
         float max = array.get(0);
         int re = 0;
         for (int i = 1; i < array.size(); i++) {
@@ -76,6 +78,7 @@ public class YOLOv3ObjectDetection {
         }
         return re;
     }
+
     private void setClasses() {
         try {
             File f = new File(class_file_name_dir);
@@ -88,6 +91,7 @@ public class YOLOv3ObjectDetection {
             errors = true;
         }
     }
+
     private void setNetwork() {
         network = Dnn.readNet(model_weights, model_config);
     }
@@ -98,9 +102,11 @@ public class YOLOv3ObjectDetection {
             output_layers.add(layer_names.get(i - 1));
         }
     }
+
     private void setLayerNames() {
         layer_names = network.getLayerNames();
     }
+
     private void loadImage() {
         System.out.println(input_path);
         Mat img = Imgcodecs.imread(input_path);
@@ -108,9 +114,10 @@ public class YOLOv3ObjectDetection {
         Imgproc.resize(img, resizedImage, size, 0.9, 0.9);
         height = resizedImage.height();
         width = resizedImage.width();
- //       channels = resizedImage.channels();
+        //       channels = resizedImage.channels();
         image = resizedImage;
     }
+
     private void detectObject() {
         Mat blob_from_image = Dnn.blobFromImage(image, 0.00392, size, mean, true, false);
         network.setInput(blob_from_image);
@@ -118,6 +125,7 @@ public class YOLOv3ObjectDetection {
         network.forward(outputs, output_layers);
         //blob = blob_from_image;
     }
+
     private void getBoxDimensions() {
         for (Mat output : outputs) {
 
@@ -167,7 +175,7 @@ public class YOLOv3ObjectDetection {
                     String label = classes.get(class_ids.get(i));
 
                     //Imgproc.putText(image, label, text_point, font, 1, color);
-                    addTextToBox(image, label, new Scalar(255,255,255), font, color,
+                    addTextToBox(image, label, new Scalar(255, 255, 255), font, color,
                             text_point, 1, 1);
                 }
             }
@@ -207,7 +215,7 @@ public class YOLOv3ObjectDetection {
         String outputFileName = "detected_test.jpg";
         YOLOv3ObjectDetection ydt = new YOLOv3ObjectDetection(inputPath, outputPath, image_size, outputFileName, current_dir);
 
-        if( ! ydt.loadPipeline() ) {
+        if (!ydt.loadPipeline()) {
             Mat predImg = ydt.getImage();
 
             HighGui.imshow("Detected image", predImg);

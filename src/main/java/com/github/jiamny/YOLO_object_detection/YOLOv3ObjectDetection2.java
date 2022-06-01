@@ -18,12 +18,29 @@ class PredictedBBox {
     private final ArrayList<Float> confidences = new ArrayList<>();
     private final ArrayList<Integer> class_ids = new ArrayList<>();
 
-    public void setBbox(Rect2d rect) {bboxes.add( rect );}
-    public void setConfidence(float cf) { confidences.add(cf);}
-    public void setClass_id(int id) {class_ids.add(id);}
-    public ArrayList<Rect2d> getBbox() {return bboxes;}
-    public ArrayList<Float> getConfidence() { return confidences;}
-    public ArrayList<Integer> getClass_id() {return class_ids;}
+    public void setBbox(Rect2d rect) {
+        bboxes.add(rect);
+    }
+
+    public void setConfidence(float cf) {
+        confidences.add(cf);
+    }
+
+    public void setClass_id(int id) {
+        class_ids.add(id);
+    }
+
+    public ArrayList<Rect2d> getBbox() {
+        return bboxes;
+    }
+
+    public ArrayList<Float> getConfidence() {
+        return confidences;
+    }
+
+    public ArrayList<Integer> getClass_id() {
+        return class_ids;
+    }
 }
 
 public class YOLOv3ObjectDetection2 {
@@ -32,9 +49,10 @@ public class YOLOv3ObjectDetection2 {
         System.load("/usr/local/share/java/opencv4/libopencv_java455.so");
     }
 
-    private final  List<String> cocoLabels;
+    private final List<String> cocoLabels;
 
-    private  final Net net;
+    private final Net net;
+
     public YOLOv3ObjectDetection2(List<String> cocoCls, Net network) {
         cocoLabels = cocoCls;
         net = network;
@@ -57,8 +75,8 @@ public class YOLOv3ObjectDetection2 {
         // generate radnom color in order to draw bounding boxes
         Random random = new Random();
         ArrayList<Scalar> colors = new ArrayList<>();
-            for (int i= 0; i < cocoLabels.size(); i++) {
-            colors.add(new Scalar( new double[] {random.nextInt(255), random.nextInt(255), random.nextInt(255)}));
+        for (int i = 0; i < cocoLabels.size(); i++) {
+            colors.add(new Scalar(new double[]{random.nextInt(255), random.nextInt(255), random.nextInt(255)}));
         }
 
         //  -- determine  the output layer names that we need from YOLO
@@ -77,15 +95,15 @@ public class YOLOv3ObjectDetection2 {
         // -- Now , do so-called “non-maxima suppression”
         //Non-maximum suppression is performed on the boxes whose confidence is equal to or greater than the threshold.
         // This will reduce the number of overlapping boxes:
-        MatOfInt indices =  getBBoxIndicesFromNonMaximumSuppression(boxes, confidences);
+        MatOfInt indices = getBBoxIndicesFromNonMaximumSuppression(boxes, confidences);
 
         //-- Finally, go over indices in order to draw bounding boxes on the image:
         return drawBoxesOnTheImage(img,
-                               indices,
-                               boxes,
-                               cocoLabels,
-                               class_ids,
-                               colors);
+                indices,
+                boxes,
+                cocoLabels,
+                class_ids,
+                colors);
     }
 
     private PredictedBBox forwardImageOverNetwork(Mat img, Net dnnNet, List<String> outputLayers) {
@@ -117,7 +135,7 @@ public class YOLOv3ObjectDetection2 {
         // The remaining elements are the confidence levels (ie object types) associated with each class.
         // The box is assigned to the category corresponding to the highest score of the box:
 
-        for(Mat output : outputs) {
+        for (Mat output : outputs) {
             // loop over each of the detections. Each row is a candidate detection,
             // System.out.println("Output.rows(): " + output.rows() + ", Output.cols(): " + output.cols());
             for (int i = 0; i < output.rows(); i++) {
@@ -144,17 +162,17 @@ public class YOLOv3ObjectDetection2 {
         return result;
     }
 
-    private MatOfInt getBBoxIndicesFromNonMaximumSuppression(ArrayList<Rect2d> boxes, ArrayList<Float> confidences ) {
+    private MatOfInt getBBoxIndicesFromNonMaximumSuppression(ArrayList<Rect2d> boxes, ArrayList<Float> confidences) {
         MatOfRect2d mOfRect = new MatOfRect2d();
         mOfRect.fromList(boxes);
         MatOfFloat mfConfs = new MatOfFloat(Converters.vector_float_to_Mat(confidences));
         MatOfInt result = new MatOfInt();
-        Dnn.NMSBoxes(mOfRect, mfConfs, (float)(0.6), (float)(0.5), result);
+        Dnn.NMSBoxes(mOfRect, mfConfs, (float) (0.6), (float) (0.5), result);
         return result;
     }
 
     private Mat drawBoxesOnTheImage(Mat img,
-                            MatOfInt indices,
+                                    MatOfInt indices,
                                     ArrayList<Rect2d> boxes,
                                     List<String> cocoLabels,
                                     ArrayList<Integer> class_ids,
@@ -194,13 +212,13 @@ public class YOLOv3ObjectDetection2 {
             }
 
             //  load our YOLO object detector trained on COCO dataset
-            Net net = Dnn.readNetFromDarknet( cfgPath, wgtPath );
+            Net net = Dnn.readNetFromDarknet(cfgPath, wgtPath);
 
             // YOLO on GPU:
             // dnnNet.setPreferableBackend(Dnn.DNN_BACKEND_CUDA);
             // dnnNet.setPreferableTarget(Dnn.DNN_TARGET_CUDA);
             tgt2 = new YOLOv3ObjectDetection2(cocoCls, net);
-        } catch(FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.exit(-1);
         }

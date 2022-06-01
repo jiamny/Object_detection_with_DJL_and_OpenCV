@@ -6,7 +6,7 @@ contains examples of using deep java library and OpenCV to do object detection
 
 - Java opencv 4.5.5 
 
-- Deep Java library 0.16.0
+- Deep Java library 0.17.0
 
 - openjdk 11 and openjfx 11
 
@@ -17,8 +17,11 @@ contains examples of using deep java library and OpenCV to do object detection
 
 - [YOLOv4 Object Detection using OpenCV] (https://lindevs.com/yolov4-object-detection-using-opencv)
 
-- [DeepSOCIAL: Social Distancing Monitoring and Infection Risk Assessment in COVID-19 Pandemic] (https://github.com/shliang0603/Yolov4_DeepSocial)
+- [social-distancing-monitoring] (https://github.com/dongfang-steven-yang/social-distancing-monitoring)
 
 - [OpenCV Java Tutorials] (https://github.com/opencv-java)
 
+- [self-driving-car] (https://github.com/ndrplz/self-driving-car)
+
+- [Map Vehicles into Bird's Eye View] (https://github.com/ndrplz/surround_vehicles_awareness)
 

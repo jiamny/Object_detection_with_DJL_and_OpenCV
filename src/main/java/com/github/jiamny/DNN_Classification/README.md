@@ -1,5 +1,5 @@
-This contains the code for **Image Classification with OpenCV Java**. For more information - visit [**Image Classification with OpenCV Java**](https://www.learnopencv.com/image-classification-with-opencv-java/)
-
+This contains the code for **Image Classification with OpenCV Java**. For more information - visit [**Image
+Classification with OpenCV Java**](https://www.learnopencv.com/image-classification-with-opencv-java/)
 
 ## Getting Started
 
@@ -39,7 +39,8 @@ pip3 install -r requirements.txt
 
 ### OpenCV
 
-In this blog post we are using OpenCV 4.3.0 unavailable via `pip` and OpenCV for Java. That is why, we first need to build the
+In this blog post we are using OpenCV 4.3.0 unavailable via `pip` and OpenCV for Java. That is why, we first need to
+build the
 OpenCV library. To do so:
 
 1. Check the list of the below libraries. Install the missed dependencies:
@@ -109,7 +110,8 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
  -D BUILD_EXAMPLES=ON ..
 ```
 
-If you want to configure the build with some specific Java version, please, add the following fields, verifying the paths:
+If you want to configure the build with some specific Java version, please, add the following fields, verifying the
+paths:
 
 ```bash
  -D JAVA_AWT_INCLUDE_PATH=/usr/lib/jvm/java-1.x.x-openjdk-amd64/include \
@@ -125,7 +127,9 @@ If you want to configure the build with some specific Java version, please, add 
 make -j8
 ```
 
-Make sure, you didn't get any errors. In case of successful completion you will find the following files in the ``build`` directory:
+Make sure, you didn't get any errors. In case of successful completion you will find the following files in
+the ``build`` directory:
+
 * ``bin/opencv-430.jar``
 * ``lib/libopencv_java430.so``
 * ``lib/python3/cv2.cpython-37m-x86_64-linux-gnu.so``
@@ -150,11 +154,15 @@ The last step is to put ``~/opencv/build/lib/libopencv_java430.so`` into the ``/
 sudo cp lib/libopencv_java430.so /usr/lib
 ```
 
-For Windows and macOS OpenCV Java build, please, follow the steps described in [Introduction to Java Development](https://docs.opencv.org/master/d9/d52/tutorial_java_dev_intro.html) or [Installing OpenCV for Java](https://opencv-java-tutorials.readthedocs.io/en/latest/01-installing-opencv-for-java.html).
-
+For Windows and macOS OpenCV Java build, please, follow the steps described
+in [Introduction to Java Development](https://docs.opencv.org/master/d9/d52/tutorial_java_dev_intro.html)
+or [Installing OpenCV for Java](https://opencv-java-tutorials.readthedocs.io/en/latest/01-installing-opencv-for-java.html)
+.
 
 ## Executing Model Conversion and Test Script
-The proposed for the experiments ``Mobilenetv2ToOnnx.py`` script supports the ``--input_image`` key to customize the model conversion pipeline. It defines the full input image path, including its name - ``"coffee.jpg"`` by default.
+
+The proposed for the experiments ``Mobilenetv2ToOnnx.py`` script supports the ``--input_image`` key to customize the
+model conversion pipeline. It defines the full input image path, including its name - ``"coffee.jpg"`` by default.
 
 To run MobileNetV2 conversion case, please, choose one of the described below scenarios:
 
@@ -171,7 +179,9 @@ python3 Mobilenetv2ToOnnx.py
 ```
 
 ## Executing DNN OpenCV Java
-To compile ``DnnOpenCV.java`` run the following command setting the ``classpath`` key, which value is the full path to the ``opencv-430.jar``:
+
+To compile ``DnnOpenCV.java`` run the following command setting the ``classpath`` key, which value is the full path to
+the ``opencv-430.jar``:
 
 ``
 javac -cp ":/home/$USER/opencv/build/bin/opencv-430.jar" DnnOpenCV.java

@@ -23,8 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static com.github.jiamny.Utils.ImageHelper.addTextToBox;
-import static com.github.jiamny.Utils.ImageHelper.mat2Image;
+import static com.github.jiamny.Utils.ImageHelper.*;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
 import static org.opencv.imgproc.Imgproc.resize;
 
@@ -42,7 +41,8 @@ public class DjlObjectDetection {
     private static Mat image = null;
     private static String backbone = "";
 
-    public DjlObjectDetection() {}
+    public DjlObjectDetection() {
+    }
 
     public static void main(String[] args) throws IOException, ModelException, TranslateException {
         DetectedObjects detection = DjlObjectDetection.predict();
@@ -60,10 +60,10 @@ public class DjlObjectDetection {
 
             Rectangle rectangle = bbox.getBounds();
             String showText = String.format("%s: %.2f", obj.getClassName(), obj.getProbability());
-            rect.x = (int)(rectangle.getX() * width);
-            rect.y = (int)(rectangle.getY() * height);
-            rect.width = (int)(rectangle.getWidth() * width);
-            rect.height = (int)(rectangle.getHeight() * height);
+            rect.x = (int) (rectangle.getX() * width);
+            rect.y = (int) (rectangle.getY() * height);
+            rect.width = (int) (rectangle.getWidth() * width);
+            rect.height = (int) (rectangle.getHeight() * height);
             // add rectangle box
             Imgproc.rectangle(image, rect, boxcolor, 1);
             // put object label
@@ -82,7 +82,7 @@ public class DjlObjectDetection {
         Path imageFile = Paths.get("data/images/dog.jpg");
         image = imread(imageFile.toString());
         //Image img = ImageFactory.getInstance().fromFile(imageFile);
-        Image img = mat2Image(image);
+        Image img = mat2DjlImage(image);
 
         if ("TensorFlow".equals(Engine.getInstance().getEngineName())) {
             backbone = "mobilenet_v2";
@@ -101,12 +101,13 @@ public class DjlObjectDetection {
         try (ZooModel<Image, DetectedObjects> model = ModelZoo.loadModel(criteria)) {
             try (Predictor<Image, DetectedObjects> predictor = model.newPredictor()) {
                 DetectedObjects detection = predictor.predict(img);
-                if( img != null )
+                if (img != null)
                     saveBoundingBoxImage(img, detection);
                 return detection;
             }
         }
     }
+
     private static void saveBoundingBoxImage(Image img, DetectedObjects detection)
             throws IOException {
 
