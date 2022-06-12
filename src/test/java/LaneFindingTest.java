@@ -1,25 +1,20 @@
 import ai.djl.ndarray.NDArray;
 import ai.djl.ndarray.NDManager;
-import ai.djl.ndarray.index.NDIndex;
 import ai.djl.ndarray.types.DataType;
 import ai.djl.ndarray.types.Shape;
 import com.github.jiamny.Self_driving.P1_traffic_lane_finding.LaneDetection;
 import com.github.jiamny.Self_driving.P1_traffic_lane_finding.Line;
-import com.github.jiamny.Utils.ImageHelper;
 import com.github.jiamny.Utils.ImageViewer;
 import com.github.jiamny.Utils.MaskMats;
 import com.github.jiamny.Utils.Utils;
 import org.junit.jupiter.api.Test;
 import org.opencv.core.*;
-import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.jiamny.Utils.ImageHelper.mat2DjlImage;
 import static com.github.jiamny.Utils.ImageHelper.ndarrayToMat;
-import static org.opencv.core.Core.inRange;
-import static org.opencv.core.CvType.CV_8UC1;
 import static org.opencv.imgcodecs.Imgcodecs.IMREAD_COLOR;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
 import static org.opencv.imgproc.Imgproc.*;
@@ -198,7 +193,7 @@ public class LaneFindingTest {
         }
 
         ImageViewer.show(laneImg);
-        Thread.sleep(500);
+        Thread.sleep(100);
 
         //keep only region of interest by masking
         List<Point> vs = new ArrayList<>();
@@ -213,7 +208,7 @@ public class LaneFindingTest {
 
         MaskMats rlt = Ldt.region_of_interest(laneImg, vertices);
         ImageViewer.show(rlt.getMasked_image());
-        Thread.sleep(500);
+        Thread.sleep(100);
 
         // make blend on color image
         Mat img_color = frames.get(0);
@@ -223,6 +218,6 @@ public class LaneFindingTest {
 
         cvtColor(img_blend, img_blend, COLOR_RGB2BGR);
         ImageViewer.show(img_blend);
-        Thread.sleep(5000);
+        Thread.sleep(500);
     }
 }

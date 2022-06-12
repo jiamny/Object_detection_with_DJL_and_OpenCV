@@ -18,6 +18,7 @@ target/
 *.tar.gz
 *.rar
 *.png
+*.pdf
 
 target
 classes

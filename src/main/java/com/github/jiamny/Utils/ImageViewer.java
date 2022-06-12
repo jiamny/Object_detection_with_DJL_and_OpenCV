@@ -25,8 +25,11 @@ public class ImageViewer {
 
     public static void show(Mat image, String windowName) {
         setSystemLookAndFeel();
+        int width = 100, height = 100;
+        if( image.width() > width ) width = image.width();
+        if( image.height() > height ) height = image.height();
 
-        JFrame frame = createJFrame(windowName, image.width(), image.height());
+        JFrame frame = createJFrame(windowName, width, height);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //EXIT_ON_CLOSE);
         Image loadedImage = matToBufferedImage(image);
         imageView.setIcon(new ImageIcon(loadedImage));
