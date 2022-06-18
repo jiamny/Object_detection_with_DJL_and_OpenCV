@@ -112,4 +112,5 @@ public class Utils {
     public static double [] toDoubleArray(ArrayList<Double> al) {
         return  al.stream().mapToDouble(i -> i).toArray();
     }
+
 }
