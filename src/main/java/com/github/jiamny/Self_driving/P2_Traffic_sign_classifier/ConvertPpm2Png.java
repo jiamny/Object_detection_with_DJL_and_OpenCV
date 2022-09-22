@@ -26,7 +26,7 @@ import java.util.List;
 public class ConvertPpm2Png {
 
     public static void main(String[] args) {
-        System.load("/usr/local/share/java/opencv4/libopencv_java455.so");
+        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
 
         Repository repository = Repository.newInstance("train", "./data/GTSRB/Final_Training/Images");
         TrainingConfig config = new DefaultTrainingConfig(Loss.softmaxCrossEntropyLoss());

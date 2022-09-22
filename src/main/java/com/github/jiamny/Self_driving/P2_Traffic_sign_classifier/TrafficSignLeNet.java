@@ -132,7 +132,7 @@ public class TrafficSignLeNet {
 
     public static void main(String [] args) {
 
-        System.load("/usr/local/share/java/opencv4/libopencv_java455.so");
+        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
 
         try {
             Repository repository = Repository.newInstance("train", "./data/GTSRB/train");

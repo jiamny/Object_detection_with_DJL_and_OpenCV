@@ -30,7 +30,7 @@ public class ImageViewer {
         if( image.height() > height ) height = image.height();
 
         JFrame frame = createJFrame(windowName, width, height);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // EXIT_ON_CLOSE);
         Image loadedImage = matToBufferedImage(image);
         imageView.setIcon(new ImageIcon(loadedImage));
 
@@ -45,7 +45,7 @@ public class ImageViewer {
         final JScrollPane imageScrollPane = new JScrollPane(imageView);
         imageScrollPane.setPreferredSize(new Dimension(width, height));
         frame.add(imageScrollPane, BorderLayout.CENTER);
-        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);// EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE); //EXIT_ON_CLOSE);
         return frame;
     }
 

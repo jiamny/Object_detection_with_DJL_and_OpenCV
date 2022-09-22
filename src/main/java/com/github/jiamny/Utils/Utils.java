@@ -28,6 +28,11 @@ public class Utils {
         System.out.println();
     }
 
+    public static void printVectorElements(long [] ax) {
+        Arrays.stream(ax).forEach(num -> System.out.print(num + " "));
+        System.out.println();
+    }
+
     public static void printVectorObjects(Object [] ax) {
         Arrays.stream(ax).forEach(num -> System.out.print(num + " "));
         System.out.println();

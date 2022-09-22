@@ -11,7 +11,7 @@ public class BitwiseAndTest {
 
     @Test
     public void testBitwiseAnd() {
-        System.load("/usr/local/share/java/opencv4/libopencv_java455.so");
+        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
 
         String img_path = "./data/self_driving/images/solidWhiteCurve.jpg";
 

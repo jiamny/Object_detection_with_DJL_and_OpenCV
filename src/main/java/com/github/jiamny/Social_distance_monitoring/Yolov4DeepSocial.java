@@ -20,7 +20,7 @@ import static org.opencv.imgproc.Imgproc.resize;
 public class Yolov4DeepSocial {
     static {
         //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        System.load("/usr/local/share/java/opencv4/libopencv_java455.so");
+        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
     }
 
     private final static double ReductionFactor = 2.0;

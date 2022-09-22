@@ -35,7 +35,7 @@ public class DjlObjectDetection {
     static {
         //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         // Make sure that you loaded your corresponding opencv java .so file.
-        System.load("/usr/local/share/java/opencv4/libopencv_java455.so");
+        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
     }
 
     private static Mat image = null;
@@ -45,6 +45,7 @@ public class DjlObjectDetection {
     }
 
     public static void main(String[] args) throws IOException, ModelException, TranslateException {
+        System.out.println(Core.NATIVE_LIBRARY_NAME);
         DetectedObjects detection = DjlObjectDetection.predict();
 
         int width = image.width();

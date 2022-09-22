@@ -11,7 +11,7 @@ public class ViedoPlayTest {
 
     @Test
     public void testVideoPlay() {
-        System.load("/usr/local/share/java/opencv4/libopencv_java455.so");
+        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
 
         String f = "./data/self_driving/videos/solidWhiteRight.mp4";
         boolean useImshow = false;

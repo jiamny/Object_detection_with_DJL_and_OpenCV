@@ -21,15 +21,15 @@ public class YOLOv4ObjectDetection {
         // no opencv_java455 in java.library.path: [/usr/java/packages/lib, /usr/lib/x86_64-linux-gnu/jni,
         // /lib/x86_64-linux-gnu, /usr/lib/x86_64-linux-gnu, /usr/lib/jni, /lib, /usr/lib]
         //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        System.load("/usr/local/share/java/opencv4/libopencv_java455.so");
+        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
     }
 
     public static void main(String[] args) throws IOException {
-        Mat img = Imgcodecs.imread("data/images/test.jpg");
+        Mat img = Imgcodecs.imread("./data/images/test.jpg");
 
         List<String> classes = Files.readAllLines(Paths.get("data/coco.names"));
 
-        Net net = Dnn.readNetFromDarknet("data/models/yolov4.cfg", "data/models/yolov4.weights");
+        Net net = Dnn.readNetFromDarknet("./data/models/yolov4.cfg", "./data/models/yolov4.weights");
 
         DetectionModel model = new DetectionModel(net);
         model.setInputParams(1 / 255.0, new Size(416, 416), new Scalar(0), true);

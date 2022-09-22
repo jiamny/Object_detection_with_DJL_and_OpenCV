@@ -42,7 +42,7 @@ public class YOLOv3ObjectDetection {
     private boolean errors;
 
     static {
-        System.load("/usr/local/share/java/opencv4/libopencv_java455.so");
+        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
     }
 
     public YOLOv3ObjectDetection(String inputPath, String outputPath, Integer image_size, String outputFileName, String current_dir) {

@@ -34,7 +34,7 @@ import static org.opencv.imgproc.Imgproc.resize;
 public class YOLOv5ObjectDetectionDJL {
 
     static {
-        System.load("/usr/local/share/java/opencv4/libopencv_java455.so");
+        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
     }
 
     static Rect rect = new Rect();
@@ -82,7 +82,7 @@ public class YOLOv5ObjectDetectionDJL {
             criteria = Criteria.builder()
                     .setTypes(Image.class, DetectedObjects.class)
                     .optDevice(Device.cpu())
-                    .optModelPath(Paths.get("data/models"))
+                    .optModelPath(Paths.get("./data/models"))
                     //.optModelUrls(YOLOv5ObjectDetectionDJL.class.getResource("/yolov5s").getPath())
                     .optModelName("yolov5s.torchscript.pt")
                     .optTranslator(translator)
@@ -118,7 +118,10 @@ public class YOLOv5ObjectDetectionDJL {
                     //System.out.println("r: " + frame.rows() + ", c: " + frame.cols());
                     detect(frame, model);
                     HighGui.imshow("yolov5_djl", frame);
-                    HighGui.waitKey(20);
+                    int r = HighGui.waitKey(20);
+
+                    if( r == 27 || r == 81 || r == 113 )  // ESC, Q/q
+                        break;
                     flag = cap.read(frame);
                 }
             }

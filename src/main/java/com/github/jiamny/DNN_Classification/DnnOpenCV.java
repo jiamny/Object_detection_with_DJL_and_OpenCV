@@ -111,7 +111,7 @@ public class DnnOpenCV {
 
         // load the OpenCV native library
         // System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        System.load("/usr/local/share/java/opencv4/libopencv_java455.so");
+        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
 
         // read and process the input image
         Mat inputBlob = DnnOpenCV.getPreprocessedImage(imageLocation);

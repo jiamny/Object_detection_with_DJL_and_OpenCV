@@ -52,7 +52,7 @@ import static com.github.jiamny.Utils.ImageHelper.bufferedImage2Mat;
 public class ReadPPMimageFileTest {
     @Test
     public void testReadPpmFile() {
-        System.load("/usr/local/share/java/opencv4/libopencv_java455.so");
+        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
 
         try {
             System.out.println(Arrays.toString(ImageIO.getReaderFormatNames()));

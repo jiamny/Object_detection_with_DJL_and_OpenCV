@@ -34,7 +34,7 @@ public class TrafficSignClassifier {
 
     public static void main(String[] args) {
 
-        System.load("/usr/local/share/java/opencv4/libopencv_java455.so");
+        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
 
         try {
             Engine.getInstance().setRandomSeed(1111);

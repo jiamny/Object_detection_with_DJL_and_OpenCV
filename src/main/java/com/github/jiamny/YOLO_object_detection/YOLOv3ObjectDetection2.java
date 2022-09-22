@@ -46,7 +46,7 @@ class PredictedBBox {
 public class YOLOv3ObjectDetection2 {
 
     static {
-        System.load("/usr/local/share/java/opencv4/libopencv_java455.so");
+        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
     }
 
     private final List<String> cocoLabels;

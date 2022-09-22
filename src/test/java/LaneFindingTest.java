@@ -22,7 +22,7 @@ import static org.opencv.imgproc.Imgproc.*;
 public class LaneFindingTest {
     @Test
     public void testLaneFinding() {
-        System.load("/usr/local/share/java/opencv4/libopencv_java455.so");
+        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
         LaneDetection Ldt = new LaneDetection();
 
         boolean solid_lines = true;
