@@ -103,6 +103,10 @@ public class ImageHelper {
         return image;
     }
 
+    public static Image bufferedImage2DJLImage(BufferedImage img) {
+        return ImageFactory.getInstance().fromImage(img);
+    }
+
     /**
      * Convert `Mat` to one where pixels are represented as 8 bit unsigned integers (`CV_8U`). It
      * creates a copy of the input image.

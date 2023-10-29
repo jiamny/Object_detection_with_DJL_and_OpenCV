@@ -18,9 +18,9 @@ contains examples of using deep java library and OpenCV to do object detection
 
 ## <u>Prerequisites</u>
 
-- Java opencv 4.6.0 
+- Java opencv 4.8.0 
 
-- Deep Java library 0.19.0
+- Deep Java library 0.23.0
 
 - openjdk 11
 

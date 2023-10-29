@@ -1,5 +1,6 @@
 package com.github.jiamny.Self_driving.P1_traffic_lane_finding;
 
+import ai.djl.engine.Engine;
 import ai.djl.ndarray.NDArray;
 import ai.djl.ndarray.NDManager;
 import ai.djl.ndarray.index.NDIndex;
@@ -27,8 +28,9 @@ import static org.opencv.imgproc.Imgproc.*;
 public class LaneDetection {
     static {
         // load the OpenCV native library
-        // System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
+        //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        System.load("/usr/local/share/java/opencv4/libopencv_java480.so");
+        //System.load("C:\\Program Files\\Opencv4\\java\\x64\\opencv_java454.dll");
     }
 
     public MaskMats region_of_interest(Mat img, ArrayList<MatOfPoint> vertices) {
@@ -133,8 +135,8 @@ public class LaneDetection {
             }
             //double[] slopes = t_slopes.stream().mapToDouble(Double::doubleValue).toArray();
             //int[] bias = t_bias.stream().mapToInt(Integer::intValue).toArray();
-            int neg_bias = (int) Utils.median(t_bias);
-            double neg_slope = Utils.median(t_slopes);
+            int neg_bias = (int) HelperFunctions.median(t_bias);
+            double neg_slope = HelperFunctions.median(t_slopes);
 
             int x1 = 0, y1 = neg_bias;
             int x2 = -1 * (int) (Math.round(neg_bias / neg_slope));
@@ -153,8 +155,8 @@ public class LaneDetection {
                 t_slopes.add(line.slope);
             }
 
-            int lane_right_bias = (int) Utils.median(t_bias); //manager.create(r_bias).median().getInt(0);
-            double lane_right_slope = Utils.median(t_slopes); //.median().getInt(0);
+            int lane_right_bias = (int) HelperFunctions.median(t_bias); //manager.create(r_bias).median().getInt(0);
+            double lane_right_slope = HelperFunctions.median(t_slopes); //.median().getInt(0);
             int x1 = 0, y1 = lane_right_bias;
             int x2 = (int) (Math.round((img_shape[0] - lane_right_bias) / lane_right_slope));
             int y2 = (int) img_shape[0];
@@ -311,6 +313,14 @@ public class LaneDetection {
     }
 
     public static void main(String[] args) {
+        // ----------------------------------------------------------------------
+        // set specific version of torch & CUDA
+        // ----------------------------------------------------------------------
+        System.setProperty("PYTORCH_VERSION", "1.13.1");
+        System.setProperty("PYTORCH_FLAVOR", "cu117");
+        System.out.println(Engine.getDefaultEngineName());
+        System.out.println(Engine.getInstance().defaultDevice());
+
         String current_dir = System.getProperty("user.dir");
         System.out.println(current_dir);
 
@@ -328,9 +338,12 @@ public class LaneDetection {
             if (files.length > 0) {
 
                 for (File file : files) {
+                    if( file.isDirectory() )
+                        continue;
+
                     frames.clear();
                     System.out.println(file.getName());
-                    //System.out.println(files[0]);
+                    System.out.println(files[0]);
                     Mat color_image = imread(img_path + "/" + file.getName(), IMREAD_COLOR);
                     cvtColor(color_image, color_image, COLOR_BGR2RGB);
                     frames.add(color_image);
@@ -346,8 +359,8 @@ public class LaneDetection {
 
             // test on videos
             int resize_h = 540, resize_w = 960;
-            String f = "./data/self_driving/videos/solidWhiteRight.mp4";
-            String of = "./output/videos/solidWhiteRight.mp4";
+            String f = "/media/hhj/localssd/DL_data/videos/solidWhiteRight.mp4";
+            String of = "./output/solidWhiteRight.mp4";
             boolean useImshow = true;
             String tlt = "Traffic_lane_finding";
             VideoPlay vp =new VideoPlay();

@@ -22,7 +22,11 @@ target/
 
 target
 classes
+model/
+testoutput/
 ref_doc/
-data/models/
 data/videos/
+data/GTSRB/
+data/IMG/
+data/feature_extraction/
 output/

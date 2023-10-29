@@ -42,7 +42,9 @@ public class YOLOv3ObjectDetection {
     private boolean errors;
 
     static {
-        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
+        //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        System.load("/usr/local/share/java/opencv4/libopencv_java480.so");
+        //System.load("C:\\Program Files\\Opencv4\\java\\x64\\opencv_java454.dll");
     }
 
     public YOLOv3ObjectDetection(String inputPath, String outputPath, Integer image_size, String outputFileName, String current_dir) {
@@ -60,8 +62,8 @@ public class YOLOv3ObjectDetection {
         output_layers = new ArrayList<>();
         size = new Size(image_size, image_size);
         // get yolov3-608.weights and yolov3-608.cfg form https://chowdera.com/2021/08/20210810105701286e.html#google_vignette
-        model_weights = current_dir + "/data/models/yolov3_608.weights";
-        model_config = current_dir + "/data/models/yolov3_608.cfg";
+        model_weights = "/media/hhj/localssd/DL_data/weights/yolo3/yolov3_608.weights";
+        model_config = "/media/hhj/localssd/DL_data/cfgs/yolov3_608.cfg";
         class_file_name_dir = current_dir + "/data/coco.names";
         save = true;
         errors = false;
@@ -187,13 +189,28 @@ public class YOLOv3ObjectDetection {
 
     public boolean loadPipeline() {
         try {
+            System.out.println("setNetwork()...");
             setNetwork();
+
+            System.out.println("setClasses()...");
             setClasses();
+
+            System.out.println("setLayerNames()...");
             setLayerNames();
+
+            System.out.println("setUnconnectedLayers()");
             setUnconnectedLayers();
+
+            System.out.println("loadImage()");
             loadImage();
+
+            System.out.println("detectObject()");
             detectObject();
+
+            System.out.println("getBoxDimensions()");
             getBoxDimensions();
+
+            System.out.println("drawLabels()");
             drawLabels();
         } catch (Exception e) {
             errors = true;
@@ -209,13 +226,13 @@ public class YOLOv3ObjectDetection {
 
         String current_dir = System.getProperty("user.dir");
         System.out.println(current_dir);
-        String inputPath = "data/images/test.jpg";
+        String inputPath = "data/images/person.jpg";
         String outputPath = "output";
         Integer image_size = 608;
-        String outputFileName = "detected_test.jpg";
+        String outputFileName = "detected_person.jpg";
         YOLOv3ObjectDetection ydt = new YOLOv3ObjectDetection(inputPath, outputPath, image_size, outputFileName, current_dir);
 
-        if (!ydt.loadPipeline()) {
+        if(! ydt.loadPipeline() ) {
             Mat predImg = ydt.getImage();
 
             HighGui.imshow("Detected image", predImg);

@@ -1,7 +1,8 @@
-
-
 import com.github.jiamny.Utils.VideoPlay;
-import org.junit.jupiter.api.Test;
+
+import org.opencv.core.Core;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import static org.opencv.highgui.HighGui.destroyAllWindows;
 import org.opencv.core.Mat;
@@ -11,7 +12,8 @@ public class ViedoPlayTest {
 
     @Test
     public void testVideoPlay() {
-        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
+        //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        System.load("/usr/local/share/java/opencv4/libopencv_java480.so");
 
         String f = "./data/self_driving/videos/solidWhiteRight.mp4";
         boolean useImshow = false;

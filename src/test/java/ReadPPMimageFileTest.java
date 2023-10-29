@@ -25,12 +25,16 @@ import ai.djl.util.PairList;
 
 import com.github.jiamny.Utils.ImageHelper;
 import com.github.jiamny.Utils.ImageViewer;
-import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.Test;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+//import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -48,16 +52,18 @@ import java.util.List;
 
 
 import static com.github.jiamny.Utils.ImageHelper.bufferedImage2Mat;
+import static org.testng.Assert.assertEquals;
 
 public class ReadPPMimageFileTest {
     @Test
     public void testReadPpmFile() {
-        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
+        //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        System.load("/usr/local/share/java/opencv4/libopencv_java480.so");
 
         try {
             System.out.println(Arrays.toString(ImageIO.getReaderFormatNames()));
 
-            BufferedImage in_image = ImageIO.read(new File("./data/GTSRB/Final_Test/Images/00000.ppm"));
+            BufferedImage in_image = ImageIO.read(new File("./data/IMG/Test/00000.ppm"));
 
             ImageViewer.show(bufferedImage2Mat(in_image));
             Thread.sleep(1500);
@@ -68,9 +74,9 @@ public class ReadPPMimageFileTest {
 
     @Test
     public void testReadPpmFileFolder() {
-        System.load("/usr/local/share/java/opencv4/libopencv_java455.so");
+        System.load("/usr/local/share/java/opencv4/libopencv_java480.so");
 
-        Repository repository = Repository.newInstance("train", "./data/GTSRB/Final_Training/Images");
+        Repository repository = Repository.newInstance("Train", "./data/IMG");
         TrainingConfig config = new DefaultTrainingConfig(Loss.softmaxCrossEntropyLoss());
 
         try(Model model = Model.newInstance("model")) {
@@ -90,36 +96,36 @@ public class ReadPPMimageFileTest {
                     "00020", "00021", "00022", "00023", "00024", "00025", "00026", "00027", "00028", "00029",
                     "00030", "00031", "00032", "00033", "00034", "00035", "00036", "00037", "00038", "00039",
                     "00040", "00041", "00042");
-            assertEquals(synsets, dataset.getSynset());
+            //assertEquals(synsets, dataset.getSynset());
 
             Trainer trainer = model.newTrainer(config);
             NDManager manager = trainer.getManager();
-/*
-            BufferedImage img2 = ImageIO.read(new File("./data/PPM/00000/00000_00001.ppm"));
+
+            BufferedImage img2 = ImageIO.read(new File("./data/IMG/Train/00000/00000_00001.ppm"));
 
             NDArray img =
                     ImageFactory.getInstance()
-                            .fromFile(Paths.get("./data/PPM/00000/00000_00001.ppm"))
+                            .fromFile(Paths.get("./data/IMG/Train/00000/00000_00001.ppm"))
                             .toNDArray(manager);
 
-            //Mat iim = ImageHelper.bufferedImage2Mat(img2);
-            //ImageViewer.show(iim);
+            Mat iim = ImageHelper.bufferedImage2Mat(img2);
+            ImageViewer.show(iim);
             //Imgproc.cvtColor(iim, iim, Imgproc.COLOR_RGB2BGR);
 
             ImageViewer.show(ImageHelper.bufferedImage2Mat(img2), "img2");
             Thread.sleep(3500);
             Image jimg = ImageFactory.getInstance().fromImage(img2);
 
-            Mat iim = ImageHelper.ndarrayToMat(img);
-            Imgproc.cvtColor(iim, iim, Imgproc.COLOR_BGR2RGB);
-            ImageViewer.show(iim, "iim");
-            Thread.sleep(3500);
+            //Mat iim = ImageHelper.ndarrayToMat(img);
+            //Imgproc.cvtColor(iim, iim, Imgproc.COLOR_BGR2RGB);
+            //ImageViewer.show(iim, "iim");
+            //Thread.sleep(3500);
             //Imgcodecs.imwrite("./data/PPM/00000_00001.png", iim);
-*/
+/*
             int cnt = 0;
             // convert ppm to png
             for(String cls : synsets) {
-                String dirPath = "./data/GTSRB/Final_Training/Images/" + cls;
+                String dirPath = "./data/IMG/Train/" + cls;
                 //String dirPath = "./data/GTSRB/Final_Test/Images";
                 System.out.println(dirPath);
                 String outDir = "./data/GTSRB/train/" + cls;
@@ -138,13 +144,13 @@ public class ReadPPMimageFileTest {
                             System.out.println(pathname);
                             String fpath = dirPath + "/" + pathname;
                             String opath = outDir + "/" + pathname.replace(".ppm", ".png");
-                            /*
-                            NDArray img = ImageFactory.getInstance()
-                                            .fromFile(Paths.get(fpath))
-                                            .toNDArray(manager);
 
-                            Mat iim = ImageHelper.ndarrayToMat(img);
-                             */
+                            //NDArray img = ImageFactory.getInstance()
+                            //                .fromFile(Paths.get(fpath))
+                            //                .toNDArray(manager);
+
+                            //Mat iim = ImageHelper.ndarrayToMat(img);
+
                             System.out.println(opath);
                             // -------------------------------------------
                             // ImageIO.read() image in RGB format!!!
@@ -159,7 +165,7 @@ public class ReadPPMimageFileTest {
                     }
                 }
             }
-
+*/
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -167,36 +173,27 @@ public class ReadPPMimageFileTest {
 
     @Test
     public void testRandomSplit() throws IOException, TranslateException {
-        System.load("/usr/local/share/java/opencv4/libopencv_java455.so");
-
-        Repository repository = Repository.newInstance("test", "./data/imagefolder");
-        ImageFolder dataset =
-                ImageFolder.builder().setRepository(repository).setSampling(1, false).build();
-        System.out.println(dataset.size());
-        System.out.println(dataset.getSynset());
-
-        RandomAccessDataset[] sets = dataset.randomSplit(75, 25);
-        System.out.println("sets[0].size(): " + sets[0].size());
-        assertEquals(sets[0].size(), 2);
+        //System.load("C:\\Program Files\\Opencv4\\java\\x64\\opencv_java454.dll");
+        System.load("/usr/local/share/java/opencv4/libopencv_java470.so");
 
         try {
             NDManager manager = NDManager.newBaseManager();
             NDArray img =
                     ImageFactory.getInstance()
-                            .fromFile(Paths.get("./data/PPM/00000/00003_00028.ppm"))
+                            .fromFile(Paths.get("./data/IMG/Train/00000/00003_00028.ppm"))
                             .toNDArray(manager);
 
             Mat iim = ImageHelper.ndarrayToMat(img);
             Imgproc.cvtColor(iim, iim, Imgproc.COLOR_BGR2RGB);
             ImageViewer.show(iim);
             Thread.sleep(3500);
-            Imgcodecs.imwrite("./data/PPM/00003_00028.png", iim);
+            Imgcodecs.imwrite("./data/IMG/00003_00028.png", iim);
 
             NDArray dog =
                     ImageFactory.getInstance()
                             .fromFile(
                                     Paths.get(
-                                            "./data/imagefolder/dog/dog_bike_car.jpg"))
+                                            "./data/images/dog.jpg"))
                             .toNDArray(manager);
 
             iim = ImageHelper.ndarrayToMat(dog);

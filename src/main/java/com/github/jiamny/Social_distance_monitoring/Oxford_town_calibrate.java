@@ -157,6 +157,14 @@ public class Oxford_town_calibrate {
     }
 
     public static void main(String[] args) {
+        // ----------------------------------------------------------------------
+        // set specific version of torch & CUDA
+        // ----------------------------------------------------------------------
+        System.setProperty("PYTORCH_VERSION", "1.13.1");
+        System.setProperty("PYTORCH_FLAVOR", "cu117");
+        System.out.println(Engine.getDefaultEngineName());
+        System.out.println(Engine.getInstance().defaultDevice());
+
         System.load("/usr/local/share/java/opencv4/libopencv_java455.so");
         Device device = Engine.getInstance().defaultDevice();
         if (Engine.getInstance().getGpuCount() > 0)

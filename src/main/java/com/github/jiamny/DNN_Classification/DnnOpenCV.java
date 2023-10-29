@@ -1,5 +1,6 @@
 package com.github.jiamny.DNN_Classification;
 
+import ai.djl.engine.Engine;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -28,8 +29,8 @@ public class DnnOpenCV {
 
     private static final double SCALE_FACTOR = 1 / 255.0;
 
-    private static final String IMAGENET_CLASSES = "data/models/imagenet_classes.txt";
-    private static final String MODEL_PATH = "data/models/pytorch_mobilenet.onnx";
+    private static final String IMAGENET_CLASSES = "data/imagenet_classes.txt";
+    private static final String MODEL_PATH = "src/main/java/com/github/jiamny/DNN_Classification/models/pytorch_mobilenet.onnx";
 
     private static final Scalar MEAN = new Scalar(0.485, 0.456, 0.406);
     private static final Scalar STD = new Scalar(0.229, 0.224, 0.225);
@@ -66,6 +67,11 @@ public class DnnOpenCV {
 
         // create empty Mat images for float conversions
         Mat imgFloat = new Mat(image.rows(), image.cols(), CvType.CV_32FC3);
+
+        // show preprocessed image
+        HighGui.imshow("image", image);
+        HighGui.waitKey(0);
+        HighGui.destroyAllWindows();
 
         // convert input image to float type
         image.convertTo(imgFloat, CvType.CV_32FC3, SCALE_FACTOR);
@@ -107,16 +113,26 @@ public class DnnOpenCV {
     }
 
     public static void main(String[] args) {
+        // ----------------------------------------------------------------------
+        // set specific version of torch & CUDA
+        // ----------------------------------------------------------------------
+        System.setProperty("PYTORCH_VERSION", "1.13.1");
+        System.setProperty("PYTORCH_FLAVOR", "cu117");
+        System.out.println(Engine.getDefaultEngineName());
+        System.out.println(Engine.getInstance().defaultDevice());
+
         String imageLocation = "data/images/coffee.jpg";
 
         // load the OpenCV native library
-        // System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
+        //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        System.load("/usr/local/share/java/opencv4/libopencv_java480.so");
+        System.out.println("Engine: " + Engine.getInstance().getEngineName());
 
         // read and process the input image
         Mat inputBlob = DnnOpenCV.getPreprocessedImage(imageLocation);
 
         // read generated ONNX model into org.opencv.dnn.Net object
+        System.out.println(DnnOpenCV.MODEL_PATH);
         Net dnnNet = Dnn.readNetFromONNX(DnnOpenCV.MODEL_PATH);
         System.out.println("DNN from ONNX was successfully loaded!");
 

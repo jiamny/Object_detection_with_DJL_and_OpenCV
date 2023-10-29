@@ -1,12 +1,12 @@
-import org.junit.jupiter.api.Test;
+import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.github.jiamny.Utils.Utils.combinationUtil;
-import static com.github.jiamny.Utils.Utils.printVectorElements;
+import static com.github.jiamny.Utils.HelperFunctions.combinationUtil;
+import static com.github.jiamny.Utils.HelperFunctions.printVectorElements;
 
 public class CombinationTest {
 

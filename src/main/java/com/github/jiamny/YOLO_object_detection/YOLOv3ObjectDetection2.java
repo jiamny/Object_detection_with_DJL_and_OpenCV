@@ -1,5 +1,6 @@
 package com.github.jiamny.YOLO_object_detection;
 
+import ai.djl.engine.Engine;
 import org.opencv.core.*;
 import org.opencv.dnn.Dnn;
 import org.opencv.dnn.Net;
@@ -46,7 +47,8 @@ class PredictedBBox {
 public class YOLOv3ObjectDetection2 {
 
     static {
-        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
+        System.load("/usr/local/share/java/opencv4/libopencv_java480.so");
+        //System.load("C:\\Program Files\\Opencv4\\java\\x64\\opencv_java454.dll");
     }
 
     private final List<String> cocoLabels;
@@ -187,7 +189,7 @@ public class YOLOv3ObjectDetection2 {
                 Point text_point = new Point(box.x, box.y - 5);
                 Imgproc.rectangle(img, w_h, x_y, colors.get(class_ids.get(i)), 1);
                 String label = cocoLabels.get(class_ids.get(i));
-                Imgproc.putText(img, label, text_point, Imgproc.FONT_HERSHEY_SIMPLEX, 1, colors.get(class_ids.get(i)), 2);
+                Imgproc.putText(img, label, text_point, Imgproc.FONT_HERSHEY_SIMPLEX, 0.8, colors.get(class_ids.get(i)), 2);
             }
         }
         return img;
@@ -196,10 +198,12 @@ public class YOLOv3ObjectDetection2 {
     public static void main(String[] args) {
 
         String current_dir = System.getProperty("user.dir");
+        System.out.println("Engine: " + Engine.getInstance().getEngineName());
+
         System.out.println(current_dir);
-        String imgPath = "data/videos/OxfordTownCentreDataset.avi";
-        String cfgPath = "data/models/yolov3_608.cfg";
-        String wgtPath = "data/models/yolov3_608.weights";
+        String imgPath = "/media/hhj/localssd/DL_data/videos/OxfordTownCentreDataset.mp4";
+        String cfgPath = "/media/hhj/localssd/DL_data/cfgs/yolov3_608.cfg";
+        String wgtPath = "/media/hhj/localssd/DL_data/weights/yolo3/yolov3_608.weights";
         String clsPath = "data/coco.names";
         YOLOv3ObjectDetection2 tgt2 = null;
 

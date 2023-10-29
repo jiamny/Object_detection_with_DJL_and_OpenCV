@@ -102,10 +102,6 @@ public class ImageUtils {
         return new Rectangle(bbox.getFloat(0), bbox.getFloat(1), width, height);
     }
 
-    public static Image bufferedImage2DJLImage(BufferedImage img) {
-        return ImageFactory.getInstance().fromImage(img);
-    }
-
     public static void saveImage(BufferedImage img, String name, String path) {
         Image newImage = ImageFactory.getInstance().fromImage(img); // 支持多种图片格式，自动适配
         Path outputDir = Paths.get(path);

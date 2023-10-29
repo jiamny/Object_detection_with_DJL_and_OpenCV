@@ -27,6 +27,7 @@ import ai.djl.training.listener.TrainingListener;
 import ai.djl.training.loss.Loss;
 import ai.djl.training.optimizer.Optimizer;
 import ai.djl.training.tracker.Tracker;
+import org.opencv.core.Core;
 import tech.tablesaw.api.DoubleColumn;
 import tech.tablesaw.api.NumericColumn;
 import tech.tablesaw.api.StringColumn;
@@ -37,7 +38,7 @@ import java.util.*;
 
 import static ai.djl.training.EasyTrain.evaluateDataset;
 import static ai.djl.training.EasyTrain.trainBatch;
-import static com.github.jiamny.Utils.Utils.toDoubleArray;
+import static com.github.jiamny.Utils.HelperFunctions.toDoubleArray;
 
 import org.apache.commons.lang3.ArrayUtils;
 import tech.tablesaw.plotly.Plot;
@@ -131,10 +132,20 @@ public class TrafficSignLeNet {
     }
 
     public static void main(String [] args) {
+        //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        System.load("/usr/local/share/java/opencv4/libopencv_java480.so");
+        //System.load("C:\\Program Files\\Opencv4\\java\\x64\\opencv_java454.dll");
 
-        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
+        // ----------------------------------------------------------------------
+        // set specific version of torch & CUDA
+        // ----------------------------------------------------------------------
+        System.setProperty("PYTORCH_VERSION", "1.13.1");
+        System.setProperty("PYTORCH_FLAVOR", "cu117");
+        System.out.println(Engine.getDefaultEngineName());
+        System.out.println(Engine.getInstance().defaultDevice());
 
         try {
+            //https://sid.erda.dk/public/archives/daaeac0d7ce1152aea9b61d9f1e19370/published-archive.html
             Repository repository = Repository.newInstance("train", "./data/GTSRB/train");
             Engine.getInstance().setRandomSeed(1111);
 

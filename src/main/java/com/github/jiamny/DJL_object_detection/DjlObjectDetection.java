@@ -9,6 +9,8 @@ import ai.djl.modality.cv.ImageFactory;
 import ai.djl.modality.cv.output.BoundingBox;
 import ai.djl.modality.cv.output.DetectedObjects;
 import ai.djl.modality.cv.output.Rectangle;
+import ai.djl.ndarray.NDList;
+import ai.djl.ndarray.NDManager;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ModelZoo;
 import ai.djl.repository.zoo.ZooModel;
@@ -18,12 +20,16 @@ import org.opencv.core.*;
 import org.opencv.highgui.HighGui;
 import org.opencv.imgproc.Imgproc;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static com.github.jiamny.Utils.ImageHelper.*;
+import static com.github.jiamny.Utils.ImageViewer.show;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
 import static org.opencv.imgproc.Imgproc.resize;
 
@@ -34,8 +40,8 @@ public class DjlObjectDetection {
 
     static {
         //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        // Make sure that you loaded your corresponding opencv java .so file.
-        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
+        // Make sure that you loaded your corresponding opencv java .dll file.
+        System.load("/usr/local/share/java/opencv4/libopencv_java480.so");
     }
 
     private static Mat image = null;
@@ -45,6 +51,14 @@ public class DjlObjectDetection {
     }
 
     public static void main(String[] args) throws IOException, ModelException, TranslateException {
+        // ----------------------------------------------------------------------
+        // set specific version of torch & CUDA
+        // ----------------------------------------------------------------------
+        System.setProperty("PYTORCH_VERSION", "1.13.1");
+        System.setProperty("PYTORCH_FLAVOR", "cu117");
+        System.out.println(Engine.getDefaultEngineName());
+        System.out.println(Engine.getInstance().defaultDevice());
+
         System.out.println(Core.NATIVE_LIBRARY_NAME);
         DetectedObjects detection = DjlObjectDetection.predict();
 
@@ -82,8 +96,17 @@ public class DjlObjectDetection {
     public static DetectedObjects predict() throws IOException, ModelException, TranslateException {
         Path imageFile = Paths.get("data/images/dog.jpg");
         image = imread(imageFile.toString());
-        //Image img = ImageFactory.getInstance().fromFile(imageFile);
         Image img = mat2DjlImage(image);
+
+        // -----------------------------------------------------------------
+        // following methods not work!!!
+        // -----------------------------------------------------------------
+        //Image img = ImageFactory.getInstance().fromFile(imageFile);
+
+        //BufferedImage image = ImageIO.read(new File(imageFile.toString()));
+        //Image img = ImageFactory.getInstance().fromImage(image);
+
+        System.out.println("Engine: " + Engine.getInstance().getEngineName());
 
         if ("TensorFlow".equals(Engine.getInstance().getEngineName())) {
             backbone = "mobilenet_v2";
@@ -119,10 +142,13 @@ public class DjlObjectDetection {
         Image newImage = img.duplicate(); //Image.Type.TYPE_INT_ARGB);
         newImage.drawBoundingBoxes(detection);
 
+        NDManager manager = NDManager.newBaseManager();
+        Mat im = ndarrayToMat(newImage.toNDArray(manager));
+        show(im, "Detected_image");
+
         Path imagePath = outputDir.resolve("detected-dog_bike_car.png");
         // OpenJDK can't save jpg with alpha channel
         newImage.save(Files.newOutputStream(imagePath), "png");
         System.out.println("Detected objects image has been saved in: " + imagePath);
-
     }
 }

@@ -1,6 +1,7 @@
 import com.github.jiamny.Utils.ImageHelper;
 import com.github.jiamny.Utils.ImageUtils;
-import org.junit.jupiter.api.Test;
+import org.opencv.core.Core;
+import org.testng.annotations.Test;
 
 import static org.opencv.imgcodecs.Imgcodecs.IMREAD_COLOR;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
@@ -13,7 +14,8 @@ public class ImageViewerTest {
 
     @Test
     public void testImageViewer() throws InterruptedException {
-        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
+        //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        System.load("/usr/local/share/java/opencv4/libopencv_java480.so");
 
         String img_path = "./data/self_driving/images/solidWhiteCurve.jpg";
 
@@ -26,7 +28,9 @@ public class ImageViewerTest {
 
     @Test
     public void testBufferedImageViewer() throws InterruptedException {
-        System.load("/usr/local/share/java/opencv4/libopencv_java455.so");
+        //System.load("C:\\Program Files\\Opencv4\\java\\x64\\opencv_java454.dll");
+        System.load("/usr/local/share/java/opencv4/libopencv_java480.so");
+
         try {
             String[] labels = {"solidYellowLeft", "solidWhiteRight"};
 

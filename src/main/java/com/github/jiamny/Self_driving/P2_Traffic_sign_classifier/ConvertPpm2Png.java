@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
@@ -26,9 +27,13 @@ import java.util.List;
 public class ConvertPpm2Png {
 
     public static void main(String[] args) {
-        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
+        System.load("/usr/local/share/java/opencv4/libopencv_java480.so");
+        //System.load("C:\\Program Files\\Opencv4\\java\\x64\\opencv_java454.dll");
 
-        Repository repository = Repository.newInstance("train", "./data/GTSRB/Final_Training/Images");
+        String current_dir = System.getProperty("user.dir");
+        System.out.println(current_dir);
+
+        Repository repository = Repository.newInstance("train", "./data/IMG/Train");
         TrainingConfig config = new DefaultTrainingConfig(Loss.softmaxCrossEntropyLoss());
 
         try(Model model = Model.newInstance("model")) {
@@ -54,7 +59,7 @@ public class ConvertPpm2Png {
 
             // convert ppm to png
             for(String cls : synsets) {
-                String dirPath = "./data/GTSRB/Final_Training/Images/" + cls;
+                String dirPath = "./data/IMG/Train/" + cls;
                 System.out.println(dirPath);
                 String outDir = "./data/GTSRB/train/" + cls;
 
@@ -91,7 +96,7 @@ public class ConvertPpm2Png {
                     }
                 }
             }
-            String dirPath = "./data/GTSRB/Final_Test/Images";
+            String dirPath = "./data/IMG/Test";
             String outDir = "./data/GTSRB/test";
 
             if( ! Files.exists(Paths.get(outDir)) )

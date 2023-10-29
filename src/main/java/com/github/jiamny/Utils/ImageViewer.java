@@ -1,18 +1,13 @@
 package com.github.jiamny.Utils;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Image;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 
-import org.opencv.core.Mat;
+import org.opencv.core.*;
 
 import static com.github.jiamny.Utils.ImageHelper.matToBufferedImage;
 
@@ -61,5 +56,23 @@ public class ImageViewer {
         } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void displayImage( BufferedImage image ) {
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setSize(image.getWidth(), image.getHeight());
+
+        //BufferedImage image = ImageIO.read(new File("image.jpg"));
+        JPanel pane = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(image, 0, 0, null);
+            }
+        };
+
+        frame.add(pane);
+        frame.setVisible(true);
     }
 }

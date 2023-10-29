@@ -14,6 +14,7 @@ import ai.djl.nn.SequentialBlock;
 import ai.djl.translate.Translator;
 import com.github.jiamny.Utils.ImageHelper;
 import com.github.jiamny.Utils.ImageViewer;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.highgui.HighGui;
@@ -33,8 +34,17 @@ import static com.github.jiamny.Self_driving.P2_Traffic_sign_classifier.TrafficS
 public class TrafficSignClassifier {
 
     public static void main(String[] args) {
+        //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        System.load("/usr/local/share/java/opencv4/libopencv_java480.so");
+        //System.load("C:\\Program Files\\Opencv4\\java\\x64\\opencv_java454.dll");
 
-        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
+        // ----------------------------------------------------------------------
+        // set specific version of torch & CUDA
+        // ----------------------------------------------------------------------
+        System.setProperty("PYTORCH_VERSION", "1.13.1");
+        System.setProperty("PYTORCH_FLAVOR", "cu117");
+        System.out.println(Engine.getDefaultEngineName());
+        System.out.println(Engine.getInstance().defaultDevice());
 
         try {
             Engine.getInstance().setRandomSeed(1111);

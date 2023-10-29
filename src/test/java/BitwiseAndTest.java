@@ -1,4 +1,5 @@
-import org.junit.jupiter.api.Test;
+import org.opencv.core.Core;
+import org.testng.annotations.Test;
 import org.opencv.core.Mat;
 
 import static org.opencv.core.Core.bitwise_and;
@@ -11,12 +12,11 @@ public class BitwiseAndTest {
 
     @Test
     public void testBitwiseAnd() {
-        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
-
+        //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        System.load("/usr/local/share/java/opencv4/libopencv_java480.so");
         String img_path = "./data/self_driving/images/solidWhiteCurve.jpg";
 
         Mat src = imread(img_path, IMREAD_COLOR);
-
         Mat src_gray = new Mat();
         cvtColor(src, src_gray, COLOR_BGR2GRAY);
         Mat dst = new Mat();

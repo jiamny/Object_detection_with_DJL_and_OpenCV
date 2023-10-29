@@ -3,6 +3,7 @@ package com.github.jiamny.YOLO_object_detection;
 import ai.djl.Device;
 import ai.djl.MalformedModelException;
 import ai.djl.ModelException;
+import ai.djl.engine.Engine;
 import ai.djl.inference.Predictor;
 import ai.djl.modality.cv.Image;
 import ai.djl.modality.cv.ImageFactory;
@@ -34,7 +35,8 @@ import static org.opencv.imgproc.Imgproc.resize;
 public class YOLOv5ObjectDetectionDJL {
 
     static {
-        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
+        System.load("/usr/local/share/java/opencv4/libopencv_java480.so");
+        //System.load("C:\\Program Files\\Opencv4\\java\\x64\\opencv_java454.dll");
     }
 
     static Rect rect = new Rect();
@@ -73,16 +75,24 @@ public class YOLOv5ObjectDetectionDJL {
     }
 
     public static void main(String[] args) {
-        boolean useOnnx = true;
+        // ----------------------------------------------------------------------
+        // set specific version of torch & CUDA
+        // ----------------------------------------------------------------------
+        System.setProperty("PYTORCH_VERSION", "1.13.1");
+        System.setProperty("PYTORCH_FLAVOR", "cu117");
+        System.out.println(Engine.getDefaultEngineName());
+        System.out.println(Engine.getInstance().defaultDevice());
 
-        Translator<Image, DetectedObjects> translator = YoloV5Translator.builder().optSynsetArtifactName("classes.txt").build();
+        boolean useOnnx = false;
+
+        Translator<Image, DetectedObjects> translator = YoloV5Translator.builder().optSynsetArtifactName("coco_classes.txt").build();
         Criteria<Image, DetectedObjects> criteria;
 
-        if (!useOnnx) {
+        if( ! useOnnx ) {
             criteria = Criteria.builder()
                     .setTypes(Image.class, DetectedObjects.class)
                     .optDevice(Device.cpu())
-                    .optModelPath(Paths.get("./data/models"))
+                    .optModelPath(Paths.get("/media/hhj/localssd/DL_data/weights/yolo5"))
                     //.optModelUrls(YOLOv5ObjectDetectionDJL.class.getResource("/yolov5s").getPath())
                     .optModelName("yolov5s.torchscript.pt")
                     .optTranslator(translator)
@@ -92,7 +102,7 @@ public class YOLOv5ObjectDetectionDJL {
             criteria = Criteria.builder()
                     .setTypes(Image.class, DetectedObjects.class)
                     .optDevice(Device.cpu())
-                    .optModelPath(Paths.get("data/models"))
+                    .optModelPath(Paths.get("/media/hhj/localssd/DL_data/weights/yolo5"))
                     //.optModelUrls(YOLOv5ObjectDetectionDJL.class.getResource("/yolov5").getPath())
                     .optModelName("yolov5s.onnx")
                     .optTranslator(translator)
@@ -100,11 +110,11 @@ public class YOLOv5ObjectDetectionDJL {
                     .build();
         }
 
-        try (ZooModel<Image, DetectedObjects> model = ModelZoo.loadModel(criteria)) {
+        try(ZooModel<Image, DetectedObjects> model = ModelZoo.loadModel(criteria)) {
             // camera
             //VideoCapture cap = new VideoCapture(CAP_ANY);
-            VideoCapture cap = new VideoCapture("data/videos/car_chase_01.mp4");
-            if (!cap.isOpened()) {
+            VideoCapture cap = new VideoCapture("/media/hhj/localssd/DL_data/videos/usa-street.mp4"); //car_chase_01.mp4");
+            if(!cap.isOpened()) {
                 System.err.println("Error opening video file");
                 cap.release();
                 System.exit(-1);

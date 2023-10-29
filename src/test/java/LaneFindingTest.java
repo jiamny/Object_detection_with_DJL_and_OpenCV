@@ -6,13 +6,13 @@ import com.github.jiamny.Self_driving.P1_traffic_lane_finding.LaneDetection;
 import com.github.jiamny.Self_driving.P1_traffic_lane_finding.Line;
 import com.github.jiamny.Utils.ImageViewer;
 import com.github.jiamny.Utils.MaskMats;
-import com.github.jiamny.Utils.Utils;
-import org.junit.jupiter.api.Test;
+import org.testng.annotations.Test;
 import org.opencv.core.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.github.jiamny.Utils.HelperFunctions.median;
 import static com.github.jiamny.Utils.ImageHelper.mat2DjlImage;
 import static com.github.jiamny.Utils.ImageHelper.ndarrayToMat;
 import static org.opencv.imgcodecs.Imgcodecs.IMREAD_COLOR;
@@ -22,7 +22,9 @@ import static org.opencv.imgproc.Imgproc.*;
 public class LaneFindingTest {
     @Test
     public void testLaneFinding() {
-        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
+        //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        System.load("/usr/local/share/java/opencv4/libopencv_java480.so");
+
         LaneDetection Ldt = new LaneDetection();
 
         boolean solid_lines = true;
@@ -62,7 +64,7 @@ public class LaneFindingTest {
 
         for (int i = 0; i < lines.rows(); i++) {
             double[] val = lines.get(i, 0);
-     //       System.out.println(val[0] + " " + val[1] + " " + val[2] + " " + val[3]);
+            //       System.out.println(val[0] + " " + val[1] + " " + val[2] + " " + val[3]);
             d_lines.add(new Line(val[0], val[1], val[2], val[3]));
         }
 
@@ -109,8 +111,8 @@ public class LaneFindingTest {
         //neg_slope = np.median([l.slope for l in neg_lines])
         //double[] slopes = t_slopes.stream().mapToDouble(Double::doubleValue).toArray();
         //int[] bias = t_bias.stream().mapToInt(Integer::intValue).toArray();
-        int neg_bias = (int) Utils.median(t_bias);
-        double neg_slope = Utils.median(t_slopes);
+        int neg_bias = (int) median(t_bias);
+        double neg_slope = median(t_slopes);
         System.out.println("neg_bias: " + neg_bias + " neg_slope: " + neg_slope);
         int x1 = 0, y1 = neg_bias;
         int x2 = -1 * (int) (Math.round(neg_bias / neg_slope));
@@ -130,8 +132,8 @@ public class LaneFindingTest {
         //lane_right_slope = np.median([l.slope for l in pos_lines])
         //double[] r_slopes = t_slopes.stream().mapToDouble(Double::doubleValue).toArray();
         //int[] r_bias = t_bias.stream().mapToInt(Integer::intValue).toArray();
-        int lane_right_bias = (int) Utils.median(t_bias); //manager.create(r_bias).median().getInt(0);
-        double lane_right_slope = Utils.median(t_slopes); //.median().getInt(0);
+        int lane_right_bias = (int) median(t_bias); //manager.create(r_bias).median().getInt(0);
+        double lane_right_slope = median(t_slopes); //.median().getInt(0);
         x1 = 0;
         y1 = lane_right_bias;
         x2 = (int) (Math.round((img_shape[0] - lane_right_bias) / lane_right_slope));
@@ -221,3 +223,5 @@ public class LaneFindingTest {
         Thread.sleep(500);
     }
 }
+
+

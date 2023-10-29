@@ -1,5 +1,6 @@
 package com.github.jiamny.Social_distance_monitoring;
 
+import ai.djl.engine.Engine;
 import org.opencv.core.Mat;
 import org.opencv.highgui.HighGui;
 import org.opencv.videoio.VideoCapture;
@@ -13,10 +14,19 @@ public class Oxford_town_get_background {
     static {
         // load the OpenCV native library
         // System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        System.load("/usr/local/share/java/opencv4/libopencv_java455.so");
+        System.load("/usr/local/share/java/opencv4/libopencv_java480.so");
+        //System.load("C:\\Program Files\\Opencv4\\java\\x64\\opencv_java454.dll");
     }
 
     public static void main(String[] args) {
+        // ----------------------------------------------------------------------
+        // set specific version of torch & CUDA
+        // ----------------------------------------------------------------------
+        System.setProperty("PYTORCH_VERSION", "1.13.1");
+        System.setProperty("PYTORCH_FLAVOR", "cu117");
+        System.out.println(Engine.getDefaultEngineName());
+        System.out.println(Engine.getInstance().defaultDevice());
+
         String imgPath = "data/videos/OxfordTownCentreDataset.avi";
 
         String current_dir = System.getProperty("user.dir");

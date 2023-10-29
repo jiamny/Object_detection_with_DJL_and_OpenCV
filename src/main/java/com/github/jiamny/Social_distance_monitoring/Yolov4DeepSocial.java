@@ -1,5 +1,6 @@
 package com.github.jiamny.Social_distance_monitoring;
 
+import ai.djl.engine.Engine;
 import org.opencv.core.*;
 import org.opencv.dnn.DetectionModel;
 import org.opencv.dnn.Dnn;
@@ -20,7 +21,8 @@ import static org.opencv.imgproc.Imgproc.resize;
 public class Yolov4DeepSocial {
     static {
         //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        System.load("/usr/local/share/java/opencv4/libopencv_java460.so");
+        System.load("/usr/local/share/java/opencv4/libopencv_java480.so");
+        //System.load("C:\\Program Files\\Opencv4\\java\\x64\\opencv_java454.dll");
     }
 
     private final static double ReductionFactor = 2.0;
@@ -253,10 +255,22 @@ public class Yolov4DeepSocial {
 
 
     public static void main(String[] args) {
+        // ----------------------------------------------------------------------
+        // set specific version of torch & CUDA
+        // ----------------------------------------------------------------------
+        System.setProperty("PYTORCH_VERSION", "1.13.1");
+        System.setProperty("PYTORCH_FLAVOR", "cu117");
+        System.out.println(Engine.getDefaultEngineName());
+        System.out.println(Engine.getInstance().defaultDevice());
+
+        // 确定Deep Java Library (DJL)中的可用GPU内存
+        //MemoryUsage mem = CudaUtils.getGpuMemory(device);
+        //mem.getMax();
+        System.out.println("Engine: " + Engine.getInstance().getEngineName());
 
         //######################## Frame number
         int StartFrom  = 0;
-        int EndAt      = 500;                    // -1 for the end of the video
+        int EndAt      = 500;            // -1 for the end of the video
 
         Yolov4DeepSocial yolo4ds = new Yolov4DeepSocial();
         int width  = 608;                // 416
@@ -265,12 +279,12 @@ public class Yolov4DeepSocial {
         try {
             List<String> classes = Files.readAllLines(Paths.get("./data/coco.names"));
 
-            Net net = Dnn.readNetFromDarknet("./data/Yolov4_DeepSocial/yolov4.cfg",
-                                             "./data/Yolov4_DeepSocial/DeepSocial.weights");
+            Net net = Dnn.readNetFromDarknet("/media/hhj/localssd/DL_data/cfgs/yolov4.cfg",
+                                             "/media/hhj/localssd/DL_data/weights/yolo4/yolov4.weights");
 
             DetectionModel model = new DetectionModel(net);
 
-            VideoCapture cap = new VideoCapture("./data/videos/OxfordTownCentreDataset.avi");
+            VideoCapture cap = new VideoCapture("/media/hhj/localssd/DL_data/videos/OxfordTownCentreDataset.mp4");
             int frame_width = (int)(cap.get(3));
             int frame_height = (int)(cap.get(4));
             width = (int)(frame_width/ReductionFactor);
